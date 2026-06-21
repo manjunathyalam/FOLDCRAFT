@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FoldCraft — Turn Words Into Folded Book Sculptures</title>
+<meta name="description" content="FoldCraft generates real book-folding instructions from any word, date, or number. Render, map, and fold — free, in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/print.css" media="print">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true"></span>
+      FoldCraft
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#how">How it works</a>
+      <a href="#examples">Examples</a>
+      <a href="#generator" class="nav-cta">Open generator</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Book folding, computed from real pages</p>
+        <h1>Fold a stack of pages<br>into the shape of a word.</h1>
+        <p class="lede">
+          Type a name, a date, or a number. FoldCraft renders it, maps every
+          page to a real fold line in millimetres, and gives you an
+          instruction sheet you can fold along — no kit, no account, no cost.
+        </p>
+        <div class="hero-actions">
+          <a href="#generator" class="btn btn-primary">Start folding</a>
+          <a href="#how" class="btn btn-ghost">See how it's computed</a>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="spine-label">live preview — types itself</div>
+        <div id="spineStrip" class="spine-strip"></div>
+        <div class="spine-base"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="how">
+    <div class="wrap">
+      <h2>Three real steps, not a sales pitch</h2>
+      <div class="how-grid">
+        <article class="how-step">
+          <p class="how-tag">Render</p>
+          <h3>Your text becomes a grid</h3>
+          <p>Each page in your book becomes one column of a black-and-white
+          grid. The taller your book, the more vertical detail survives.</p>
+        </article>
+        <article class="how-step">
+          <p class="how-tag">Map</p>
+          <h3>Pixels become millimetres</h3>
+          <p>FoldCraft scales the grid to your actual page height, so every
+          mark corresponds to a real, measurable point on a real page.</p>
+        </article>
+        <article class="how-step">
+          <p class="how-tag">Mark</p>
+          <h3>Every page gets fold lines</h3>
+          <p>You get a per-page list: where to fold, and which way — ready
+          to print or read straight off the screen while you work.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- GENERATOR -->
+  <section id="generator" class="generator">
+    <div class="wrap">
+      <h2>Build your pattern</h2>
+      <p class="section-sub">Free to use, runs entirely in your browser. Nothing you type is uploaded anywhere.</p>
+
+      <div class="gen-panel">
+        <form id="genForm" class="gen-form">
+
+          <div class="field-group">
+            <label for="inputText">Word, name, date, or number</label>
+            <input type="text" id="inputText" maxlength="24" value="2026" placeholder="e.g. LOVE, 14·02, 2026">
+            <p class="field-hint">Short and bold reads best — book folding can't render fine detail or curves.</p>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="pageCount">Pages used</label>
+              <input type="number" id="pageCount" min="20" max="400" value="120">
+            </div>
+            <div class="field-group">
+              <label for="pageHeight">Page height (mm)</label>
+              <input type="number" id="pageHeight" min="100" max="400" value="210">
+            </div>
+            <div class="field-group">
+              <label for="fontChoice">Pattern style</label>
+              <select id="fontChoice">
+                <option value="'Work Sans', sans-serif" selected>Bold sans</option>
+                <option value="'Fraunces', serif">Bold serif</option>
+                <option value="Impact, sans-serif">Condensed block</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-wide">Generate fold pattern</button>
+        </form>
+
+        <div class="gen-result" id="genResult" hidden>
+
+          <div class="result-preview">
+            <h3>Pattern preview</h3>
+            <p class="result-note">This is the silhouette your folded page edges will form when the book is closed and stood on its spine.</p>
+            <canvas id="previewCanvas" class="preview-canvas"></canvas>
+          </div>
+
+          <div class="result-instructions">
+            <div class="instructions-head">
+              <h3>Fold instructions</h3>
+              <div class="instructions-actions">
+                <button type="button" id="printBtn" class="btn btn-ghost btn-small">Print sheet</button>
+                <button type="button" id="csvBtn" class="btn btn-ghost btn-small">Export CSV</button>
+              </div>
+            </div>
+            <p class="result-note">
+              Measurements are millimetres from the top edge of the page.
+              <strong>V</strong> = valley fold (toward you), <strong>M</strong> = mountain fold (away from you).
+              This is a simplified guide — test on a scrap page before committing to your book.
+            </p>
+            <div class="table-scroll">
+              <table id="instructionsTable" class="instructions-table">
+                <thead>
+                  <tr><th>Page</th><th>Fold lines (mm)</th><th>Tab range(s)</th></tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXAMPLES -->
+  <section id="examples" class="examples">
+    <div class="wrap">
+      <h2>A few starting points</h2>
+      <p class="section-sub">Click one to load it straight into the generator.</p>
+      <div class="examples-grid" id="examplesGrid">
+        <button class="example-card" data-value="LOVE">
+          <canvas class="example-canvas" data-text="LOVE"></canvas>
+          <span>"LOVE"</span>
+        </button>
+        <button class="example-card" data-value="2026">
+          <canvas class="example-canvas" data-text="2026"></canvas>
+          <span>A year</span>
+        </button>
+        <button class="example-card" data-value="MUM">
+          <canvas class="example-canvas" data-text="MUM"></canvas>
+          <span>"MUM"</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-row">
+    <p>FoldCraft — a free, open pattern generator for book-folding art.</p>
+    <p class="footer-note">Runs entirely client-side. No sign-up, no tracking, no cost.</p>
+  </div>
+</footer>
+
+<script src="js/folding.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

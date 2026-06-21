@@ -1,0 +1,25 @@
+/* Printed instruction sheet only — everything else is hidden. */
+.site-header, .hero, .how, .examples, .site-footer,
+.gen-form, .generator h2, .generator > .wrap > .section-sub,
+.result-preview, .instructions-actions{
+  display: none !important;
+}
+
+.generator{ padding: 0; border: none; background: #fff; }
+.gen-panel{ display: block; }
+.gen-result{ display: block; }
+body{ background: #fff; color: #000; }
+
+.instructions-head h3::before{
+  content: "FoldCraft — fold instructions\A";
+  white-space: pre;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  display: block;
+  color: #555;
+}
+
+.table-scroll{ max-height: none; overflow: visible; border: 1px solid #999; }
+.instructions-table thead th{ background: #eee !important; color: #000 !important; }
+.instructions-table tbody tr:nth-child(even){ background: #f5f5f5 !important; }
+.instructions-table tbody td, .instructions-table thead th{ border-color: #ccc; }
